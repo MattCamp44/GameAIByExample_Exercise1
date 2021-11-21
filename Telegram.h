@@ -8,7 +8,6 @@
 #include <iostream>
 #include <math.h>
 
-
 struct Telegram
 {
     //the entity that sent this telegram

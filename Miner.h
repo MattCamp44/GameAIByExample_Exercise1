@@ -26,9 +26,9 @@ const int MaxNuggets         = 3;
 //above this value a miner is thirsty
 const int ThirstLevel        = 5;
 //above this value a miner is sleepy
-const int TirednessThreshold = 5;
+const int TirednessThreshold = 10;
 //above this value a miner is too tired to fight
-const int TooTiredToFightLevel = 2;
+const int TooTiredToFightLevel = 7;
 
 
 class Miner : public BaseGameEntity
@@ -67,6 +67,7 @@ public:
         m_pStateMachine = new StateMachine<Miner>(this);
 
         m_pStateMachine->SetCurrentState(GoHomeAndSleepTilRested::Instance());
+        m_pStateMachine->SetGlobalState(MinerGlobalState::Instance());
 
         /* NOTE, A GLOBAL STATE HAS NOT BEEN IMPLEMENTED FOR THE MINER */
     }

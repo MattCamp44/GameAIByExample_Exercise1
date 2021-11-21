@@ -40,7 +40,7 @@ public:
 
 
 
-class WanderAroundLookingForBob: State<Bandit>{
+class WanderAroundLookingForBob: public State<Bandit>{
 
 private:
 
@@ -66,6 +66,31 @@ public:
 
 };
 
+
+
+class BanditGlobalState: public State<Bandit>{
+
+private:
+
+    BanditGlobalState(){};
+
+    BanditGlobalState(const BanditGlobalState&);
+    BanditGlobalState& operator=(const BanditGlobalState&);
+
+public:
+
+    static BanditGlobalState* Instance();
+
+    virtual void Enter(Bandit* pBandit);
+
+    virtual void Execute(Bandit* pBandit);
+
+    virtual void Exit(Bandit* pBandit);
+
+    virtual bool OnMessage(Bandit* agent, const Telegram& msg);
+
+
+};
 
 
 #endif //GAMEAIBYEXAMPLE_EXERCISE1_BANDITOWNEDSTATES_H

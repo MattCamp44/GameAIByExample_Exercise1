@@ -9,6 +9,7 @@
 #include "BaseGameEntity.h"
 #include "StateMachine.h"
 #include "Locations.h"
+#include "BanditOwnedStates.h"
 
 struct Telegram;
 
@@ -38,11 +39,14 @@ public:
         m_pStateMachine = new StateMachine<Bandit>(this);
 
         //TODO: set initial state Bandit
-        m_pStateMachine ->SetCurrentState();
+        m_pStateMachine ->SetCurrentState(QuenchThirstBandit::Instance());
+        m_pStateMachine->SetGlobalState(BanditGlobalState::Instance());
 
     }
 
     ~Bandit(){ delete m_pStateMachine; }
+
+    void Update();
 
     virtual bool HandleMessage(const Telegram& msg);
 

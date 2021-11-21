@@ -8,9 +8,10 @@
 #include "MessageDispatcher.h"
 //#include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
-
+#include "Bandit.h"
 
 std::ofstream os;
+using std::cout;
 
 int main()
 {
@@ -28,15 +29,22 @@ int main()
     //create his wife
     MinersWife* Elsa = new MinersWife(ent_Elsa);
 
+    Bandit* bandit = new Bandit(ent_Bandit);
+
     //register them with the entity manager
     EntityMgr->RegisterEntity(Bob);
     EntityMgr->RegisterEntity(Elsa);
-
+    EntityMgr->RegisterEntity(bandit);
     //run Bob and Elsa through a few Update calls
     for (int i=0; i<30; ++i)
     {
+
+        cout << "\n" <<"Money Carried\n" << "Bob: " << Bob->GoldCarried() << "\n" << "bandit:" << bandit->GoldCarried() << "\n";
+
+
         Bob->Update();
         Elsa->Update();
+        bandit->Update();
 
         //dispatch any delayed messages
         Dispatch->DispatchDelayedMessages();
@@ -50,6 +58,7 @@ int main()
     //tidy up
     delete Bob;
     delete Elsa;
+    delete bandit;
 
     //wait for a keypress before exiting
     //PressAnyKeyToContinue();

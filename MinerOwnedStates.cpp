@@ -12,11 +12,11 @@
 #include "CrudeTimer.h"
 #include "EntityNames.h"
 #include "BanditOwnedStates.h"
-
+#include<memory>
 
 #include <iostream>
 using std::cout;
-
+using std::shared_ptr;
 
 #ifdef TEXTOUTPUT
 #include <fstream>
@@ -323,13 +323,22 @@ void MinerGlobalState::Exit(Miner *miner) {
 
 bool MinerGlobalState::OnMessage(Miner *agent, const Telegram &msg) {
 
+
+    //cout << "\n" << GetNameOfEntity(agent->ID()) << ": " << " Message received, My location is " << GetLocationName(agent->Location());
+
     switch(msg.Msg){
 
         case Msg_FightMe:
         {
 
+            cout << "\n" << GetNameOfEntity(agent->ID()) << ": " << " Message received, My location is " << GetLocationName(agent->Location());
 
-            if(  static_cast<location_type>(msg.ExtraInfo) == agent->Location() )
+            //Ignore message if sleeping
+            if( agent->GetFSM()->GetCurrentState() == GoHomeAndSleepTilRested::Instance()  ) return true;
+
+            //TODO: This might not work
+            //Check if miner and bandit are in the same location
+            if( DereferenceToType<FightRequestData>(msg.ExtraInfo).location != agent->Location() ) return true;
 
             cout << "\nMessage handled by " << GetNameOfEntity(agent->ID()) << " at time: "
                  << Clock->GetCurrentTimeCrudeTimer();
@@ -353,23 +362,72 @@ bool MinerGlobalState::OnMessage(Miner *agent, const Telegram &msg) {
 
             SetConsoleTextAttribute(hConsole, wOldColorAttrs );
 
-            if( agent->FatiguedToFight() )
+
+            if( agent->GoldCarried() <= 0 ){
+
+                cout << "\n" << GetNameOfEntity(agent->ID()) << ": " << " Sorry man, no money here ";
+
+                shared_ptr<FightOutcomeData> outcomedata(new FightOutcomeData(no_money,0));
+
+                //TODO:This might not work
                 Dispatch->DispatchMessageA(SEND_MSG_IMMEDIATELY, //time delay
-                                          agent->ID(),        //ID of sender
-                                          ent_Bandit,            //ID of recipient
-                                          Msg_FightOutcome,   //the message
-                                          (void*)bandit_wins);
-            else
+                                           agent->ID(),        //ID of sender
+                                           ent_Bandit,            //ID of recipient
+                                           Msg_FightOutcome,   //the message
+                                           (void*) outcomedata.get());
+
+                return true;
+
+            }
+
+
+            if( agent->FatiguedToFight() ){
+
+                shared_ptr<FightOutcomeData> outcomedata(new FightOutcomeData(bandit_wins,agent->GoldCarried()));
+
+                //TODO:This might not work
                 Dispatch->DispatchMessageA(SEND_MSG_IMMEDIATELY, //time delay
-                                          agent->ID(),        //ID of sender
-                                          ent_Bandit,            //ID of recipient
-                                          Msg_FightOutcome,   //the message
-                                          (void*)miner_wins);
+                                           agent->ID(),        //ID of sender
+                                           ent_Bandit,            //ID of recipient
+                                           Msg_FightOutcome,   //the message
+                                           (void*) outcomedata.get());
+
+                cout << "\n" << GetNameOfEntity(agent->ID()) << ": " << " Ouch! I lost all my money! I lost " << agent->GoldCarried();
+
+
+                agent->SetGoldCarried(0);
+
+
+
+
+
+
+            }
+            else{
+
+                shared_ptr<FightOutcomeData> outcomedata(new FightOutcomeData(miner_wins,0));
+
+                Dispatch->DispatchMessageA(SEND_MSG_IMMEDIATELY, //time delay
+                                           agent->ID(),        //ID of sender
+                                           ent_Bandit,            //ID of recipient
+                                           Msg_FightOutcome,   //the message
+                                           (void*)outcomedata.get());
+
+
+                agent->SetGoldCarried( agent->GoldCarried() + DereferenceToType<FightRequestData>(msg.ExtraInfo).moneycarried );
+
+                cout << "\n" << GetNameOfEntity(agent->ID()) << ": " << " Nice try bandit! Now I get all your money! I got from you: " << DereferenceToType<FightRequestData>(msg.ExtraInfo).moneycarried;
+            }
+
+
+            SetConsoleTextAttribute(hConsole, wOldColorAttrs );
+
+            return true;
 
         }
 
 
-
+        return true;
 
     }
 

@@ -44,6 +44,8 @@ public:
     void SetGlobalState(State<entity_type>* s) {m_pGlobalState = s;}
     void SetPreviousState(State<entity_type>* s){m_pPreviousState = s;}
 
+    State<entity_type>* GetCurrentState(){return m_pCurrentState;}
+
     //call this to update the FSM
     void  Update()const
     {
