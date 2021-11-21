@@ -40,6 +40,8 @@ public:
     //all entities must implement an update function
     virtual void  Update()=0;
 
+    virtual void UpdateStateAndLocation()=0;
+
     //all entities can communicate using messages. They are sent
     //using the MessageDispatcher singleton class
     virtual bool  HandleMessage(const Telegram& msg)=0;

@@ -14,4 +14,12 @@ void Bandit::Update() {
 
 }
 
+void Bandit::UpdateStateAndLocation() {
+
+    if(m_LocationUpdated) m_Location = m_NextLocation;
+
+    m_LocationUpdated = false;
+
+}
+
 

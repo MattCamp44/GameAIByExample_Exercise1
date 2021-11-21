@@ -29,6 +29,8 @@ private:
     State<entity_type>*   m_pGlobalState;
 
 
+
+
 public:
 
     StateMachine(entity_type* owner):m_pOwner(owner),
@@ -43,6 +45,8 @@ public:
     void SetCurrentState(State<entity_type>* s){m_pCurrentState = s;}
     void SetGlobalState(State<entity_type>* s) {m_pGlobalState = s;}
     void SetPreviousState(State<entity_type>* s){m_pPreviousState = s;}
+
+
 
     State<entity_type>* GetCurrentState(){return m_pCurrentState;}
 

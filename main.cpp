@@ -46,6 +46,11 @@ int main()
         Elsa->Update();
         bandit->Update();
 
+        //Second step added
+        Bob->UpdateStateAndLocation();
+        Elsa->UpdateStateAndLocation();
+        bandit->UpdateStateAndLocation();
+
         //dispatch any delayed messages
         Dispatch->DispatchDelayedMessages();
 

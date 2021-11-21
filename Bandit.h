@@ -24,6 +24,10 @@ private:
 
     location_type m_Location;
 
+    location_type m_NextLocation;
+
+    bool m_LocationUpdated;
+
     int m_idrunknessLevel;
 
     int m_iGoldCarried;
@@ -33,7 +37,8 @@ public:
     Bandit(int id): m_Location(saloon),
                     m_idrunknessLevel(0),
                     m_iGoldCarried(20),
-                    BaseGameEntity(id)
+                    BaseGameEntity(id),
+                    m_LocationUpdated(false)
     {
 
         m_pStateMachine = new StateMachine<Bandit>(this);
@@ -48,6 +53,8 @@ public:
 
     void Update();
 
+    void UpdateStateAndLocation();
+
     virtual bool HandleMessage(const Telegram& msg);
 
     StateMachine<Bandit>* GetFSM()const{return m_pStateMachine;}
@@ -55,7 +62,7 @@ public:
     //-------------------------------------------------------------accessors
 
     location_type Location()const{ return m_Location; }
-    void ChangeLocation( location_type loc ){ m_Location = loc; }
+    void ChangeLocation( location_type loc ){ m_NextLocation = loc; m_LocationUpdated=true; }
 
     int DrunknessLevel()const{ return m_idrunknessLevel; }
 

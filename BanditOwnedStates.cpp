@@ -110,6 +110,8 @@ void WanderAroundLookingForBob::Execute(Bandit *pBandit) {
 
     pBandit->DecreaseDrunknessLevel();
 
+    cout << "\n"  << GetNameOfEntity(pBandit->ID()) << " Looking for Bob at the " << GetLocationName(pBandit->Location());
+
     if( pBandit->IsSober() && pBandit->GoldCarried() >= 2 ){
 
 
@@ -123,7 +125,7 @@ void WanderAroundLookingForBob::Execute(Bandit *pBandit) {
 
     }
 
-    cout << "\n"  << GetNameOfEntity(pBandit->ID()) << " Looking for Bob at the " << GetLocationName(pBandit->Location());
+
 
 #ifndef DEBUG_BANDIT
 

@@ -51,6 +51,10 @@ private:
     //the higher the value, the more tired the miner
     int                   m_iFatigue;
 
+    location_type m_NextLocation;
+
+    bool m_LocationUpdated;
+
 
 
 public:
@@ -77,6 +81,8 @@ public:
     //this must be implemented
     void Update();
 
+    void UpdateStateAndLocation();
+
     //so must this
     virtual bool  HandleMessage(const Telegram& msg);
 
@@ -87,7 +93,7 @@ public:
 
     //-------------------------------------------------------------accessors
     location_type Location()const{return m_Location;}
-    void          ChangeLocation(location_type loc){m_Location=loc;}
+    void          ChangeLocation(location_type loc){m_NextLocation = loc; m_LocationUpdated=true;}
 
     int           GoldCarried()const{return m_iGoldCarried;}
     void          SetGoldCarried(int val){m_iGoldCarried = val;}
