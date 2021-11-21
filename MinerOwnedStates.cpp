@@ -11,6 +11,8 @@
 #include "MessageTypes.h"
 #include "CrudeTimer.h"
 #include "EntityNames.h"
+#include "BanditOwnedStates.h"
+
 
 #include <iostream>
 using std::cout;
@@ -227,6 +229,8 @@ QuenchThirst* QuenchThirst::Instance()
     return &instance;
 }
 
+
+
 void QuenchThirst::Enter(Miner* pMiner)
 {
     if (pMiner->Location() != saloon)
@@ -294,3 +298,84 @@ bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
 }
 
 
+MinerGlobalState *MinerGlobalState::Instance() {
+
+    static MinerGlobalState instance;
+
+    return &instance;
+
+
+}
+
+void MinerGlobalState::Enter(Miner *miner) {
+
+
+
+}
+
+void MinerGlobalState::Execute(Miner *miner) {
+
+}
+
+void MinerGlobalState::Exit(Miner *miner) {
+
+}
+
+bool MinerGlobalState::OnMessage(Miner *agent, const Telegram &msg) {
+
+    switch(msg.Msg){
+
+        case Msg_FightMe:
+        {
+
+
+            if(  static_cast<location_type>(msg.ExtraInfo) == agent->Location() )
+
+            cout << "\nMessage handled by " << GetNameOfEntity(agent->ID()) << " at time: "
+                 << Clock->GetCurrentTimeCrudeTimer();
+
+
+            HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+
+            GetConsoleScreenBufferInfo(hConsole, &csbiInfo);
+
+            WORD wOldColorAttrs;
+
+            wOldColorAttrs = csbiInfo.wAttributes;
+
+            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN|FOREGROUND_INTENSITY);
+
+
+            cout << "\n" << GetNameOfEntity(agent->ID()) <<
+                 ": Aha! Wanna fight?";
+
+            SetConsoleTextAttribute(hConsole, wOldColorAttrs );
+
+            if( agent->FatiguedToFight() )
+                Dispatch->DispatchMessageA(SEND_MSG_IMMEDIATELY, //time delay
+                                          agent->ID(),        //ID of sender
+                                          ent_Bandit,            //ID of recipient
+                                          Msg_FightOutcome,   //the message
+                                          (void*)bandit_wins);
+            else
+                Dispatch->DispatchMessageA(SEND_MSG_IMMEDIATELY, //time delay
+                                          agent->ID(),        //ID of sender
+                                          ent_Bandit,            //ID of recipient
+                                          Msg_FightOutcome,   //the message
+                                          (void*)miner_wins);
+
+        }
+
+
+
+
+    }
+
+    return false;
+
+
+
+
+}

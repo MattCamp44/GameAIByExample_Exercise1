@@ -12,6 +12,16 @@ enum message_type
 {
     Msg_HiHoneyImHome,
     Msg_StewReady,
+    Msg_FightMe,
+    Msg_FightOutcome,
+};
+
+
+enum fight_outcome{
+
+    miner_wins,
+    bandit_wins
+
 };
 
 

@@ -168,6 +168,29 @@ public:
 };
 
 
+class MinerGlobalState: public State<Miner>{
+
+private:
+
+    MinerGlobalState() = default;
+
+    MinerGlobalState(const MinerGlobalState&);
+    MinerGlobalState& operator=(const MinerGlobalState&);
+
+public:
+
+    static MinerGlobalState* Instance();
+
+    virtual void Enter(Miner* miner);
+
+    virtual void Execute(Miner* miner);
+
+    virtual void Exit(Miner* miner);
+
+    virtual bool OnMessage(Miner* agent, const Telegram& msg);
+
+
+};
 
 
 

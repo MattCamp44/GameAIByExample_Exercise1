@@ -52,4 +52,16 @@ bool Miner::Fatigued()const
     return false;
 }
 
+bool Miner::FatiguedToFight() const {
+
+    if( m_iFatigue > TooTiredToFightLevel )
+        return true;
+
+    return false;
+
+
+}
+
+
+
 
