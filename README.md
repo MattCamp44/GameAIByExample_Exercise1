@@ -1,6 +1,6 @@
 # Game AI By Example - Chapter 2 - State-driven agent design
 
-This is my extension for the second chapter’s project of the book “Game AI by extension” by Mat Buckland.
+This is my extension for the second chapter’s project of the book “Game AI by example” by Mat Buckland.
 
 ## Overview
 
