@@ -52,8 +52,6 @@ public:
     //this must be implemented
     void          Update();
 
-    void          UpdateStateAndLocation();
-
     //so must this
     virtual bool  HandleMessage(const Telegram& msg);
 

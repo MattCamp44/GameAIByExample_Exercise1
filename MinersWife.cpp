@@ -16,7 +16,3 @@ void MinersWife::Update()
 
     m_pStateMachine->Update();
 }
-
-void MinersWife::UpdateStateAndLocation() {
-
-}

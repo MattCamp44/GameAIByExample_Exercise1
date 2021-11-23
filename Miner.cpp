@@ -62,14 +62,6 @@ bool Miner::FatiguedToFight() const {
 
 }
 
-void Miner::UpdateStateAndLocation() {
-
-    if(m_LocationUpdated) m_Location = m_NextLocation;
-
-    m_LocationUpdated = false;
-
-}
-
 
 
 
