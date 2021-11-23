@@ -2,7 +2,7 @@
 
 This is my extension for the second chapter’s project of the book “Game AI by extension” by Mat Buckland.
 
-##Overview
+## Overview
 
 The goal of the project is to practise with state-driven agent design. Basically we have some autonomous agents that are composed of a state object, 
 and behave according to the value that this object takes.
