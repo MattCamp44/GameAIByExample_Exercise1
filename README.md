@@ -4,8 +4,9 @@ This is my extension for the second chapter’s project of the book “Game AI b
 
 ## Overview
 
-The goal of the project is to practise with state-driven agent design. Basically we have some autonomous agents that are composed of a state object, 
-and behave according to the value that this object takes.
+The goal of the project is to practise with state-driven agent design. 
+
+We have some autonomous agents that are composed of a state object, and behave according to the value that this object takes.
 
 The original code includes the Miner and the MinersWife agent. I’ve added the Bandit agent and all its related logic ( BanditOwnedStates ).
 
